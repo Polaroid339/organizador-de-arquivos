@@ -19,7 +19,6 @@ def main(page: ft.Page):
         return caminho
 
     def organizar_arquivos(caminho):
-        # Verifica se o caminho está vazio ou é inválido
         if not caminho or not os.path.isdir(caminho):
             page.snack_bar = ft.SnackBar(
                 ft.Text("Insira um caminho válido!"))

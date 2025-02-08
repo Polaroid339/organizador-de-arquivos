@@ -11,18 +11,22 @@ def main(page: ft.Page):
     page.window.maximizable = False
     page.padding = 30
 
+    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)  # SnackBar fixo
+    page.add(snack_bar)
+
     def selecionar_caminho(e):
         caminho = askdirectory(title="Selecione uma pasta")
-        tex_caminho.value = caminho
-        tex_caminho.update()
-        page.update()
-        return caminho
+        if caminho:
+            tex_caminho.value = caminho
+            tex_caminho.update()
 
-    def organizar_arquivos(caminho):
+    def organizar_arquivos(e):
+        caminho = tex_caminho.value.strip()
+
+        # Validação do caminho
         if not caminho or not os.path.isdir(caminho):
-            page.snack_bar = ft.SnackBar(
-                ft.Text("Insira um caminho válido!"))
-            page.snack_bar.open = True
+            snack_bar.content.value = "Insira um caminho válido!"
+            snack_bar.open = True
             page.update()
             return
 
@@ -40,19 +44,32 @@ def main(page: ft.Page):
         }
 
         for arquivo in lista_arquivos:
-            nome, extensao = os.path.splitext(f"{caminho}/{arquivo}")
-            for pasta in locais:
-                if extensao in locais[pasta]:
-                    if not os.path.exists(f"{caminho}/{pasta}"):
-                        os.mkdir(f"{caminho}/{pasta}")
-                    os.rename(f"{caminho}/{arquivo}",
-                              f"{caminho}/{pasta}/{arquivo}")
+            caminho_arquivo = os.path.join(caminho, arquivo)
+            if os.path.isdir(caminho_arquivo):
+                continue
 
-        page.snack_bar = ft.SnackBar(
-            ft.Text("Arquivos organizados com sucesso!"))
-        page.snack_bar.open = True
+            nome, extensao = os.path.splitext(arquivo)
+            extensao = extensao.lower()
+
+            for pasta, extensoes in locais.items():
+                if extensao in extensoes:
+                    pasta_destino = os.path.join(caminho, pasta)
+                    if not os.path.exists(pasta_destino):
+                        os.mkdir(pasta_destino)
+
+                    destino_arquivo = os.path.join(pasta_destino, arquivo)
+
+                    contador = 1
+                    while os.path.exists(destino_arquivo):
+                        novo_nome = f"{nome}_{contador}{extensao}"
+                        destino_arquivo = os.path.join(pasta_destino, novo_nome)
+                        contador += 1
+
+                    os.rename(caminho_arquivo, destino_arquivo)
+
+        snack_bar.content.value = "Arquivos organizados com sucesso!"
+        snack_bar.open = True
         page.update()
-        return
 
     titulo = ft.Text(
         value="Organizador de Arquivos",
@@ -78,7 +95,7 @@ def main(page: ft.Page):
 
     botao2 = ft.ElevatedButton(
         text="Organizar Arquivos",
-        on_click=lambda e: organizar_arquivos(tex_caminho.value),
+        on_click=organizar_arquivos,
         icon="check",
         height=50,
         width=300,

@@ -23,7 +23,6 @@ def main(page: ft.Page):
     def organizar_arquivos(e):
         caminho = tex_caminho.value.strip()
 
-        # Validação do caminho
         if not caminho or not os.path.isdir(caminho):
             snack_bar.content.value = "Insira um caminho válido!"
             snack_bar.open = True

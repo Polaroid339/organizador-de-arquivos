@@ -11,7 +11,7 @@ def main(page: ft.Page):
     page.window.maximizable = False
     page.padding = 30
 
-    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)  # SnackBar fixo
+    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)
     page.add(snack_bar)
 
     def selecionar_caminho(e):

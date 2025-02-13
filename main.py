@@ -4,14 +4,14 @@ from tkinter.filedialog import askdirectory
 
 def main(page: ft.Page):
 
-    page.window.left = 1300
-    page.window.top = 550
+    page.window.left = 700
+    page.window.top = 350
     page.window.width = 600
     page.window.height = 400
     page.window.maximizable = False
     page.padding = 30
 
-    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)
+    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)  # SnackBar fixo
     page.add(snack_bar)
 
     def selecionar_caminho(e):
@@ -23,6 +23,7 @@ def main(page: ft.Page):
     def organizar_arquivos(e):
         caminho = tex_caminho.value.strip()
 
+        # Validação do caminho
         if not caminho or not os.path.isdir(caminho):
             snack_bar.content.value = "Insira um caminho válido!"
             snack_bar.open = True

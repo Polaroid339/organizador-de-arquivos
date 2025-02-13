@@ -11,7 +11,7 @@ def main(page: ft.Page):
     page.window.maximizable = False
     page.padding = 30
 
-    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)  # SnackBar fixo
+    snack_bar = ft.SnackBar(content=ft.Text(""), open=False)
     page.add(snack_bar)
 
     def selecionar_caminho(e):
@@ -23,7 +23,7 @@ def main(page: ft.Page):
     def organizar_arquivos(e):
         caminho = tex_caminho.value.strip()
 
-        # Validação do caminho
+
         if not caminho or not os.path.isdir(caminho):
             snack_bar.content.value = "Insira um caminho válido!"
             snack_bar.open = True

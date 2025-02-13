@@ -2,6 +2,7 @@ import flet as ft
 import os
 from tkinter.filedialog import askdirectory
 
+
 def main(page: ft.Page):
 
     page.window.left = 700
@@ -22,7 +23,6 @@ def main(page: ft.Page):
 
     def organizar_arquivos(e):
         caminho = tex_caminho.value.strip()
-
 
         if not caminho or not os.path.isdir(caminho):
             snack_bar.content.value = "Insira um caminho válido!"
@@ -62,7 +62,8 @@ def main(page: ft.Page):
                     contador = 1
                     while os.path.exists(destino_arquivo):
                         novo_nome = f"{nome}_{contador}{extensao}"
-                        destino_arquivo = os.path.join(pasta_destino, novo_nome)
+                        destino_arquivo = os.path.join(
+                            pasta_destino, novo_nome)
                         contador += 1
 
                     os.rename(caminho_arquivo, destino_arquivo)
@@ -119,5 +120,6 @@ def main(page: ft.Page):
     )
 
     page.update()
+
 
 ft.app(main)
